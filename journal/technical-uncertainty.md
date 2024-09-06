@@ -25,6 +25,8 @@ There is lack of understanding of the total cost to operate an GenAI project as 
 
 Here are possible GenAI costs:
 - Token costs for LLMs
+    - How do we track input and ouput tokens?
+    - How much will our chats generally cost in tokens for our use-case?
 - Real-time inference cost
 - Training-time cost
 - Custom Model inference cost?
