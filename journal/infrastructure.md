@@ -9,4 +9,5 @@ The cloud infrastructure we need provisioned.
 
 ## Knowledgebase 
 
-We will need to create a knowledgebase in Bedrock
+- Create a knowledgebase
+- Create an s3 bucket
