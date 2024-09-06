@@ -68,6 +68,11 @@ Cohere Light can do fine tuning.
 - Do we want to leverage completion models (fine tune them)?
     - Do we even know which are completion models?
 
+[Update 3]
+
+- How is Gaurd Rails Groundess and Relevance different from Evaluation Automatic tests in Amazon Bedrock?
+    - if GaurdRails check fails how does it remediate? Does it try again, does it just not return a result?
+
 ## Programmatic Workflow for LLMs
 
 - Is it all going to be the AWS and Bedrock SDK
