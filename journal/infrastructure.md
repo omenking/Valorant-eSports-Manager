@@ -6,3 +6,7 @@ The cloud infrastructure we need provisioned.
 
 - We need a log created at: `/bedrock/invocation-logging`
 - We need to configure Bedrock Settings for Text and Embed only information to the above log
+
+## Knowledgebase 
+
+We will need to create a knowledgebase in Bedrock
