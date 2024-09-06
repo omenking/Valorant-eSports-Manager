@@ -26,6 +26,8 @@ There is lack of understanding of the total cost to operate an GenAI project as 
 Here are possible GenAI costs:
 - Token costs for LLMs
     - How do we track input and ouput tokens?
+        - We can see input and ouput token use within Amazon Bedrock Playground Metrics tab
+        - LlamaIndex has a token counter to help you keep track when programmactically building apps
     - How much will our chats generally cost in tokens for our use-case?
 - Real-time inference cost
 - Training-time cost
