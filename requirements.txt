@@ -1,4 +1,1 @@
 boto3
-cohere
-llama-index
-llama-index-llms-bedrock

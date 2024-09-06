@@ -1,53 +1,79 @@
-import os
-from llama_index.llms.bedrock import Bedrock
-# from llama_index.embeddings import CohereBedrock
-from llama_index.core import Settings
+import boto3
+import json
 
 # Amazon Bedrock Model IDs
 # https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids.html
 
-# Amazon Bedrock parametres
-# > The LlamaIndex docs don't show them so we have go into the code
-# https://github.com/run-llama/llama_index/blob/main/llama-index-integrations/llms/llama-index-llms-bedrock/llama_index/llms/bedrock/base.py
-#
-# model: The modelId of the Bedrock model to use.
-# temperature: The temperature to use for sampling.
-# max_tokens: The maximum number of tokens to generate.
-#  - 4096 max for Command Light
-# context_size: The maximum number of tokens available for input.
-#  - 4096 max for Command Light
-
 # Cohere Request Body Parameters
 # https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-cohere-command.html
 
-llm = Bedrock(
-  model="cohere.command-light-text-v14",
-  context_size=4096,
-  max_token=400
+bedrock = boto3.client(
+  service_name='bedrock-runtime'
 )
-
 # Initialize Cohere embeddings through Amazon Bedrock
 # embed_model = CohereBedrock(
 #     model_name="embed-english-light-v3.0",
 #     client_name="bedrock"
 # )
 
-# Configure LlamaIndex to use our models
-Settings.llm = llm
-# Settings.embed_model = embed_model
+def generate_response(prompt, max_tokens=256):
+    body = json.dumps({
+        "prompt": prompt,
+        "max_tokens": max_tokens,
+        "temperature": 0.7,
+        "p": 0.75,
+        "k": 0,
+        "stop_sequences": [],
+        "return_likelihoods": "NONE"
+    })
+    
+    response = bedrock.invoke_model(
+        body=body,
+        modelId='cohere.command-light-text-v14',
+        accept='application/json',
+        contentType='application/json'
+    )
+    
+    response_body = json.loads(response.get('body').read())
+    return response_body.get('generations')[0].get('text').strip()
+
+def count_tokens(text):
+    # This is a very rough estimate. Actual token count may vary.
+    return len(text.split())
 
 def chatbot():
-  print(">>>")
-
-  while True:
-    user_input = input("User: ")
-    if user_input.lower() in ['quit', 'exit', 'bye']:
-      print("Agent: Exiting...")
-      break
+    print(">>>")
     
-    # Use the LLM directly for response generation
-    response = llm.complete(user_input)
-    print(f"Agent: {response.text.strip()}")
+    conversation_history = []
+    total_prompt_tokens = 0
+    total_completion_tokens = 0
+    
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() in ['quit', 'exit', 'bye']:
+            print("Agent: Exiting")
+            break
+        
+        conversation_history.append(f"User: {user_input}")
+        prompt = "\n".join(conversation_history[-10:])  # Use last 10 exchanges
+        
+        prompt_tokens = count_tokens(prompt)
+        response = generate_response(prompt)
+        completion_tokens = count_tokens(response)
+        
+        print(f"Agent: {response}")
+        
+        conversation_history.append(f"AI: {response}")
+        total_prompt_tokens += prompt_tokens
+        total_completion_tokens += completion_tokens
+        
+        print(f"\nTokens used in this exchange - Prompt: {prompt_tokens}, Completion: {completion_tokens}")
+        print(f"Total tokens used so far - Prompt: {total_prompt_tokens}, Completion: {total_completion_tokens}")
+
+    print(f"\nTotal tokens used in the entire conversation:")
+    print(f"Prompt tokens: {total_prompt_tokens}")
+    print(f"Completion tokens: {total_completion_tokens}")
+    print(f"Total tokens: {total_prompt_tokens + total_completion_tokens}")
 
 if __name__ == "__main__":
-  chatbot()
+    chatbot()
