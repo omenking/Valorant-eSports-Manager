@@ -29,7 +29,10 @@ Here are possible GenAI costs:
         - We can see input and ouput token use within Amazon Bedrock Playground Metrics tab
         - LlamaIndex has a token counter to help you keep track when programmactically building apps
             - We cannot track token count currently because the Bedrock plugin does not support returning the token values.
+            - We can track token usage via CloudWatch Server side, but then we have the hidden cost of logs
+                - https://aws.amazon.com/blogs/machine-learning/improve-visibility-into-amazon-bedrock-usage-and-performance-with-amazon-cloudwatch/
     - How much will our chats generally cost in tokens for our use-case?
+- Logging costs eg. CloudWatch logs let say tracking token usage.
 - Real-time inference cost
 - Training-time cost
 - Custom Model inference cost?
@@ -81,9 +84,10 @@ Cohere Light can do fine tuning.
 - Is it all going to be the AWS and Bedrock SDK
 - Can we leverage LlamaIndex or Ollama.
 
-- LlamaIndex with Amazon Bedrock does not return token count value so you cannot track token count therefor you cannot track spend. 
+- LlamaIndex with Amazon Bedrock does not return token count value so you cannot track token count therefore you cannot track spend clientside. 
     - https://github.com/run-llama/llama_index/issues/12096
     - https://github.com/Arize-ai/phoenix/issues/2616
+
 
 ## Data Use
 
