@@ -2,11 +2,19 @@
 
 He we are defining possible tasks that an agent or specialized subagents could perform.
 
+
+
 ## Questions
 
 - The agent needs to know about:
- - our current players
- - our current budget
+ - Who is our current players?
+ - What is our current budget?
+
+Let assume our team is Unexpected Victory
+
+https://www.vlr.gg/team/12020/unexpected-victory
+
+
 
 
 ## Tasks

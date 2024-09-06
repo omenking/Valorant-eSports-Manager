@@ -27,6 +27,7 @@ Here are possible GenAI costs:
 - Token costs for LLMs
 - Real-time inference cost
 - Training-time cost
+- Custom Model inference cost?
 - Serverless LLMs vs Provisioend LLMs cost
 - Session Management Cost
 - Vectostore stroage and access costs
@@ -45,6 +46,14 @@ There are many ways to optimize specific models.
 - What Evaluation/Performance metrics can we use to determine if our model(s) is perform well?
 - How would we programmatically operate evaluations or do we use a cloud services?
 - Is there any easy way to swap out models maybe via a framework like using LlamaIndex, or AWS SDK for Bedrock?
+
+[Update 1]
+AWS allows us to fine tune and do Continued Pre Training.
+Titan can do both
+Cohere Light can do fine tuning.
+
+- How good can we make Titan express through custom models?
+
 
 ## Programmatic Workflow for LLMs
 
