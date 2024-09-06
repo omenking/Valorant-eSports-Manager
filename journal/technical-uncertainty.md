@@ -31,6 +31,7 @@ Here are possible GenAI costs:
             - We cannot track token count currently because the Bedrock plugin does not support returning the token values.
             - We can track token usage via CloudWatch Server side, but then we have the hidden cost of logs
                 - https://aws.amazon.com/blogs/machine-learning/improve-visibility-into-amazon-bedrock-usage-and-performance-with-amazon-cloudwatch/
+                - We cannot isolate the logs for specific agents, since there is no custom metadata, I don't think tags can be applied here.
     - How much will our chats generally cost in tokens for our use-case?
 - Logging costs eg. CloudWatch logs let say tracking token usage.
 - Real-time inference cost

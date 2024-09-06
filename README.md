@@ -14,6 +14,7 @@ This is technical documentation and journaling so you can understand my thought 
 - [Technical Uncertainty](./journal/technical-uncertainty.md)
 - [eSports Manager Tasks](./journal/esports-manager-tasks.md)
 - [Model Cost Analysis](./journal/model-cost-anaylsis.md)
+- [Infrastructure](./journal/model-cost-anaylsis.md)
 
 # Configuration
 

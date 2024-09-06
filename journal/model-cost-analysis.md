@@ -90,6 +90,14 @@ Id compute can scale zero when not used, than this option based on the value it 
 Amazon Titan Text Lite:
 - 7.10 per hour (provisioned throughput to serve custom model, same cost if you didn't train it)
 
+## Token Usage
+
+To track usage server-side is challenging because we don't have a way to scope the logs in cloudwatch based on per conversation or event any agent. So if multiple LLMs are being used for multiple projects it can be difficult to infer.
+
+We cannot use LlamaIndex to track token input and output count clients side because Amazon Bedrock module is not coded to pass that information forward.
+
+We could try and control usage by setting the context length, however I tried an experiment where I set the context length to 100, but the API did not care and counitued beyond, so I think the context length is for specific models and maybe its not an option for Cohere's model to limit the context windoe.
+
 ## Conclusions
 
 ### Amazon Titan Premier

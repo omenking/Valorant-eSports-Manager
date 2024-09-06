@@ -1,0 +1,4 @@
+fields @timestamp, identity.arn, input.inputTokenCount, output.outputTokenCount
+| stats sum(input.inputTokenCount) as totalInputTokens,
+sum(output.outputTokenCount) as totalOutputTokens,
+count(*) as invocationCount by identity.arn

@@ -2,11 +2,6 @@ import os
 from llama_index.llms.bedrock import Bedrock
 # from llama_index.embeddings import CohereBedrock
 from llama_index.core import Settings
-from llama_index.core.callbacks import CallbackManager, LlamaDebugHandler, TokenCountingHandler
-
-debug_handler = LlamaDebugHandler()
-token_counter = TokenCountingHandler()
-callback_manager = CallbackManager([debug_handler, token_counter])
 
 # Amazon Bedrock Model IDs
 # https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids.html
@@ -22,11 +17,13 @@ callback_manager = CallbackManager([debug_handler, token_counter])
 # context_size: The maximum number of tokens available for input.
 #  - 4096 max for Command Light
 
+# Cohere Request Body Parameters
+# https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-cohere-command.html
+
 llm = Bedrock(
   model="cohere.command-light-text-v14",
   context_size=4096,
-  max_token=400,
-  callback_manager=callback_manager
+  max_token=400
 )
 
 # Initialize Cohere embeddings through Amazon Bedrock
@@ -37,7 +34,6 @@ llm = Bedrock(
 
 # Configure LlamaIndex to use our models
 Settings.llm = llm
-Settings.callback_manager = callback_manager
 # Settings.embed_model = embed_model
 
 def chatbot():
@@ -52,20 +48,6 @@ def chatbot():
     # Use the LLM directly for response generation
     response = llm.complete(user_input)
     print(f"Agent: {response.text.strip()}")
-    print(
-      "Embedding Tokens: ",
-      token_counter.total_embedding_token_count,
-      "\n",
-      "LLM Prompt Tokens: ",
-      token_counter.prompt_llm_token_count,
-      "\n",
-      "LLM Completion Tokens: ",
-      token_counter.completion_llm_token_count,
-      "\n",
-      "Total LLM Token Count: ",
-      token_counter.total_llm_token_count,
-      "\n",
-    )
 
 if __name__ == "__main__":
   chatbot()
