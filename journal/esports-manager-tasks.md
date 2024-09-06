@@ -2,6 +2,13 @@
 
 He we are defining possible tasks that an agent or specialized subagents could perform.
 
+## Questions
+
+- The agent needs to know about:
+ - our current players
+ - our current budget
+
+
 ## Tasks
 
 ### QnA Tasks
