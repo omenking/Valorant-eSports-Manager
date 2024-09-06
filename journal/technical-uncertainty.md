@@ -54,6 +54,17 @@ Cohere Light can do fine tuning.
 
 - How good can we make Titan express through custom models?
 
+[Update 2]
+
+- What is a small model for Chat completion?
+    - Cohere Light is a chat completion model can be fined tune.
+    - What is the difference (smartness vs cost) between the four Command Models?
+        - Command
+        - Command R
+        - Command R+
+        - Command Light
+- Do we want to leverage completion models (fine tune them)?
+    - Do we even know which are completion models?
 
 ## Programmatic Workflow for LLMs
 
