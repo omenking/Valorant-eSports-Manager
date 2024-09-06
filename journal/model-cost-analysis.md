@@ -1,5 +1,7 @@
 # Model Cost Analysis
 
+> All costs are in USD
+
 https://aws.amazon.com/bedrock/pricing/?refid=8228be07-d2ee-417f-b236-33eb068829a6
 
 We need to determine the base cost to use these models served by Amazon Bedrock.
@@ -33,12 +35,46 @@ https://aws.amazon.com/bedrock/titan/
 |---|---|---|
 Context Length | 128K | 4K | 32K |
 Maximum Output Token | 4K | 4K | 4K |
+## Cost Analysst of Resource Management
+
+### How much would a team spend on a eSports Manager tool?
+
+| Range | Size of Team |
+|---|---|
+| $500 | Entry-Level or Smaller |
+| $10K  | Mid-Tier |
+| $50K | Top-Tier |
+
+> Resource as in humans
+
+### eSports Manager
+
+The cost of a eSports Manager
+
+| Range | Size of Team |
+|---|---|
+| $30K - $50K | Entry-Level or Smaller |
+| $50K - $80K  | Mid-Tier |
+| $80K - $120K | Top-Tier |
+
+### Team Members Costs
+
+The cost of a team member
+
+| Player Level  | Monthly  |  Yearly  |  Recruitment Costs |
+|---|---|---|---|
+| Entry-Level   | $1K - $5K   | $12K - $60K  | Low (minimal) |
+| Mid-Tier | $5L - $10K | $60K - $120K  | Moderate  |
+| Top-Tier | $10K - $25K | $120K - $300K | $20K - $500K+               |
 
 ## Custom Model Costs
 
 > We are excluding Cohere Command R because it cannot be trained.
 
 > We are excluding Amazon Titan Premier because it cannot be customized currently.
+
+Custom models have their own inference cost per hour.
+Id compute can scale zero when not used, than this option based on the value it provides could be worth it. But we need to understand the value propostion in monterary terms to a team.
 
 
 ### Cohere Command-Light	

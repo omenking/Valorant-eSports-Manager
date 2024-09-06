@@ -111,3 +111,10 @@ and other steps in the data pipeline.
 Should I include this?
 
 Tool use could be going on and using the internet, searching google. eg. SerpAI
+
+## Judges Evaluating Project
+
+We may not be able to use custom models due to the judging process.
+
+- If we chose to use a custom model which we think requires provision throughly hourly, will we need to have a means to launch and then stop the compute for the duration of the evaluations of judeges
+- If compute has to provisioned how long would it take? Because it might take too long for judges to consider.
