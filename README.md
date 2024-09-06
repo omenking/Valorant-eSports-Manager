@@ -10,3 +10,4 @@ I am dyslexic, so please be kind if there are spelling or gramamtical errors.
 This is technical documentation and journaling so you can understand my thought process when working building my eSports Manager.
 
 - [Technical Uncertainty](./journal/technical-uncertainty.md)
+- [eSports Manager Tasks](./journal/esports-manager-tasks)
