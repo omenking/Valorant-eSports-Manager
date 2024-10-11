@@ -4,7 +4,7 @@ Description: 'Amazon Bedrock Agent with Lambda Integration'
 Parameters:
   FoundationModelName:
     Type: String
-    Default: anthropic.claude-3-5-sonnet-20240620-v1:0
+    Default: anthropic.claude-3-haiku-20240307-v1:0
 Resources:
   PromptBucket:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html
@@ -25,16 +25,23 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       Policies: 
-        - PolicyName: 'BedrockModelAccessPolicy'
+        - PolicyName: FMPolicy
           PolicyDocument: 
             Version: '2012-10-17'
             Statement: 
               - Effect: 'Allow'
                 Action: 
-                  - 'bedrock:InvokeModel'
+                  - bedrock:InvokeModel
                 Resource: 
-                  - !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:model/${FoundationModelName}"
-
+                  - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:foundation-model/*
+        - PolicyName: KBPolicy
+            Version: '2012-10-17'
+            Statement: 
+              - Effect: 'Allow'
+                Action: 
+                  - bedrock:Retrieve
+                Resource: 
+                  - !Sub arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:knowledge-base/*
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
