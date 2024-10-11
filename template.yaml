@@ -24,6 +24,16 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies: 
+        - PolicyName: 'BedrockModelAccessPolicy'
+          PolicyDocument: 
+            Version: '2012-10-17'
+            Statement: 
+              - Effect: 'Allow'
+                Action: 
+                  - 'bedrock:InvokeModel'
+                Resource: 
+                  - !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:model/${FoundationModelName}"
 
   LambdaFunction:
     Type: AWS::Lambda::Function
