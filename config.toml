@@ -1,0 +1,5 @@
+[deploy]
+profile = 'default'
+bucket = 'cfn-vct-deploys'
+region = 'us-east-1'
+stack_name = 'vct-hackathon'

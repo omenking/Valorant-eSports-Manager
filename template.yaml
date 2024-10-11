@@ -1,0 +1,138 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Amazon Bedrock Agent with Lambda Integration'
+
+Parameters:
+  FoundationModelName:
+    Type: String
+    Default: anthropic.claude-3-5-sonnet-20240620-v1:0
+Resources:
+  PromptBucket:
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${AWS::StackName}-prompt-templates'  
+
+  BedrockAgentRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: bedrock.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-AgentFunction'
+      Handler: index.handler
+      Role: !GetAtt LambdaFunctionRole.Arn
+      Code:
+        ZipFile: |
+          exports.handler = async (event) => {
+            console.log('Received event:', JSON.stringify(event, null, 2));
+            return {
+              statusCode: 200,
+              body: JSON.stringify('Hello from Lambda!'),
+            };
+          };
+      Runtime: nodejs20.x
+
+  LambdaFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  BedrockAgent:
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-bedrock-agent.html
+    Type: AWS::Bedrock::Agent
+    Properties:
+      AgentName: !Sub '${AWS::StackName}-Agent'
+      Description: 'Bedrock Agent with Lambda integration'
+      Instruction: 'You are an AI assistant that helps with various tasks.'
+      FoundationModel:
+        Ref: FoundationModelName
+      AgentResourceRoleArn: !GetAtt BedrockAgentRole.Arn
+      #PromptOverrideConfiguration:
+      #  PromptConfigurations:
+      #    # PRE_PROCESSING | ORCHESTRATION | POST_PROCESSING | KNOWLEDGE_BASE_RESPONSE_GENERATION
+      #    - PromptType: PRE_PROCESSING
+      #      BasePromptTemplate: '''
+      #      '''
+      #    - PromptType: POST_PROCESSING
+      #      BasePromptTemplate: '''
+      #      '''
+      #    - PromptType: ORCHESTRATION
+      #      BasePromptTemplate: '''
+      #      '''
+      #    - PromptType: KNOWLEDGE_BASE_RESPONSE_GENERATION
+      #      BasePromptTemplate: '''
+      #      '''
+      ActionGroups:
+        # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-bedrock-agent-agentactiongroup.html
+        - ActionGroupName: 'LambdaActionGroup'
+          Description: 'Action group for Lambda integration'
+          # https://docs.aws.amazon.com/bedrock/latest/userguide/agents-api-schema.html
+          ApiSchema:
+            Payload: |
+              ---
+              openapi: 3.0.0
+              info:
+                title: Lambda Integration API
+                version: 1.0.0
+              paths:
+                "/hello":
+                  get:
+                    summary: Say hello
+                    description: Say hello to the user
+                    operationId: sayHello
+                    parameters:
+                      - name: name
+                        in: query
+                        description: user name
+                        required: true
+                        schema:
+                          type: string
+                    responses:
+                      '200':
+                        description: Successful response
+                        content:
+                          application/json:
+                            schema:
+                              type: object
+                              properties:
+                                message:
+                                  type: string
+            #  Transform:
+            #    Name: 'AWS::Include'
+            #    Parameters:
+            #      Location: 'api-schema.yaml'
+          ActionGroupExecutor:
+            # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-bedrock-agent-actiongroupexecutor.html
+            # This field in the docs but doesn't exist
+            # It only has a single return anyway so lets remove it.
+            # CustomControl: RETURN_CONTROL
+            Lambda: !GetAtt LambdaFunction.Arn
+
+Outputs:
+  BedrockAgentId:
+    Description: 'Bedrock Agent ID'
+    Value: !Ref BedrockAgent
+  LambdaFunctionArn:
+    Description: 'Lambda Function ARN'
+    Value: !GetAtt LambdaFunction.Arn
+  PromptBucketName:
+    Description: 'S3 Bucket for storing prompt templates'
+    Value: !Ref PromptBucket
